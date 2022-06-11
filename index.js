@@ -1,6 +1,11 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const express = require("express");
 const { Client } = require("pg");
-const app = express();
+const app = express(); // Create an ExpressJS app
+const bodyParser = require('body-parser'); // Middleware ();
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
   const client = new Client({
   user: "yrntvcdjivsjqb",
@@ -28,6 +33,17 @@ app.listen(3000, () => {
   console.log("Application started and Listening on port 3000");
 });
 
-app.get("/", (req, res) => {
-  res.send("<html> <head><h1>Free Test</h></head><body><h2> This page was render direcly from the server <p>Hello there welcome to my website</p></h2></body></html>");
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/static/index.html');
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + '/static/login.html');
+});
+
+app.post('/login', (req, res) => {
+  // Insert Login Code Here
+  let username = req.body.username;
+  let password = req.body.password;
+  res.send('Username: ${username} Password: ${password}');
 });
